@@ -1,4 +1,4 @@
-// v0.0.2
+// v0.0.3
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,24 +9,24 @@ int main() {
 	char opt;
 	char repeat_prog;
 	bool have_error = false; 
-	system("chcp 1251 & cls");
+	// system("chcp 1251 & cls");
 
-	printf("<-- Арифметичний калькулятор -->\n");
+	printf("<-- Arithmetic calculator -->\n");
 
 	do {
 		result = 0;
 		do {
 			fseek(stdin, 0, SEEK_END);
-			printf(" Перше число: ");
+			printf(" First number: ");
 		} while (!scanf_s("%lf", &a));
 
 		do {
 			fseek(stdin, 0, SEEK_END);
-			printf(" Друге число: ");
+			printf(" Second number: ");
 		} while (!scanf_s("%lf", &b));
 		fseek(stdin, 0, SEEK_END);
 
-		printf(" Операція: ");
+		printf(" Operation: ");
 		opt = getchar();
 		switch (opt) {
 			case '+':
@@ -40,25 +40,25 @@ int main() {
 				break;
 			case '/':
 				if (b == 0) {
-					printf("Ділення на нуль!\n");
+					printf("Division by zero!\n");
 					have_error = true;
 				} else {
 					result = a / b;
 				}
 				break;
 			default:
-				printf("Невідома операція!\n");
+				printf("Unknown operation!\n");
 				have_error = true;
 				break;
 		}
 		if (!have_error) {
-			printf("Результат: %g\n", result);
+			printf("Result: %g\n", result);
 		}
 
-		printf("\n Продовжувати роботу (Y - так)? ");
+		printf("\n Continue (y/n)? ");
 		while ((repeat_prog = getchar()) == ' ' || repeat_prog == '\n' || repeat_prog == '\t');
 		putchar('\n');
-	} while (repeat_prog == 'Y' || repeat_prog == 'y' || repeat_prog == 'Т' || repeat_prog == 'т');
+	} while (repeat_prog == 'Y' || repeat_prog == 'y');
 
 	system("pause");
 	return 0;
