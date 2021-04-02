@@ -2,3 +2,8 @@
 *.opendb
 *.db-shm
 *.db
+<<<<<<< Updated upstream
+.vs/Calculator/v16/Browse.VC.db
+=======
+*.db
+>>>>>>> Stashed changes
