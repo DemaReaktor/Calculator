@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <Windows.h>
+
 #define BLACK 0
 #define RED 4
 #define WHITE 15
@@ -27,6 +28,7 @@ int main() {
 			fseek(stdin, 0, SEEK_END);
 			printf(" First number: ");
 		} while (!scanf_s("%lf", &a));
+		fseek(stdin, 0, SEEK_END);
 
 		do {
 			fseek(stdin, 0, SEEK_END);
@@ -70,6 +72,7 @@ int main() {
 
 		printf("\n Continue (y/n)? ");
 		while ((repeat_prog = getchar()) == ' ' || repeat_prog == '\n' || repeat_prog == '\t');
+		fseek(stdin, 0, SEEK_END);
 		putchar('\n');
 	} while (repeat_prog == 'Y' || repeat_prog == 'y');
 
