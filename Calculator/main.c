@@ -14,16 +14,16 @@ int main() {
 	double a, b, result;
 	char opt;
 	char repeat_prog;
-	bool have_error = false; 
+	bool have_error; 
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	// system("chcp 1251 & cls");
 	system("color F0");
-	system("mode 80, 20");
 
 	printf("<-- Arithmetic calculator -->\n");
 
 	do {
 		result = 0;
+		have_error = false;
 		do {
 			fseek(stdin, 0, SEEK_END);
 			printf(" First number: ");
