@@ -36,6 +36,7 @@ int main() {
 
 		printf(" Operation: ");
 		opt = getchar();
+		fseek(stdin, 0, SEEK_END);
 		switch (opt) {
 			case '+':
 				result = a + b;
