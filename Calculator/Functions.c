@@ -108,6 +108,46 @@ void log_in() {
 	} while (!scanf_s("%s", password, STR_LEN + 1));
 
 	if (search(user_name)) {
+		// long hash_password = hash(password);
+		char db_password[STR_LEN + 1];
+
+		FILE* db;
+		errno_t err;
+		if ((err = fopen_s(&db, "Database.txt", "rb")) != 0) {
+			printf("File was not opened!\n");
+		}
+		else {
+			char uname[STR_LEN + 1];
+			char c;
+			int j;
+			fseek(db, 20, SEEK_SET);
+			do {
+				fseek(db, 65, SEEK_CUR);
+				j = 0;
+				for (int i = 0; i < 20; i++) {
+					if ((c = fgetc(db)) != ' ') {
+						uname[j++] = c;
+						printf("%c\n", uname[j - 1]);
+					}
+				}
+				uname[j] = '\0';
+			} while (strcmp(user_name, uname));
+			printf("success\n");
+			fseek(db, 43, SEEK_CUR);
+			j = 0;
+			for (int i = 0; i < 20; i++) {
+				if ((c = fgetc(db)) != ' ') {
+					db_password[j++] = c;
+					printf("%c\n", db_password[j-1]);
+				}
+			}
+			db_password[j] = '\0';
+			printf("%s\n", db_password);
+			if (fclose(db) != 0) {
+				fprintf(stderr, "Error closing file\n");
+			}
+		}
+
 		SETCOLOR(GREEN);
 		printf("*** Welcome! ***\n");
 		SETCOLOR(BLACK);
@@ -127,19 +167,20 @@ bool search(char* user_name) {
 		printf("File was not opened!\n");
 	}
 	else {
-		char name[STR_LEN + 1];
+		char uname[STR_LEN + 1];
 		char c;
 		int j;
 		do {
 			j = 0;
 			for (int i = 0; i < 20; i++) {
 				if ((c = fgetc(db)) != ' ') {
-					name[j++] = c;
+					uname[j++] = c;
 				}
 			}
-			name[j] = '\0';
+			uname[j] = '\0';
+			printf("%s\n", uname);
 			fseek(db, 64, SEEK_CUR);
-			if (!strcmp(user_name, name)) {
+			if (!strcmp(user_name, uname)) {
 				found = true;
 			}
 		} while (fgetc(db) != EOF);
