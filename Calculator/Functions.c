@@ -84,7 +84,7 @@ void sign_up() {
 		printf("File was not opened!\n");
 	}
 	else {
-		fprintf(db, "%s %s %s %ld\n", user_name, first_name, last_name, hash_password);
+		fprintf(db, "%20s %20s %20s %20ld\n", user_name, first_name, last_name, hash_password);
 		fclose(db);
 	}
 
@@ -104,3 +104,7 @@ void log_in() {
 	} while (!scanf_s("%s", password, STR_LEN + 1));
 	// searching in db ...
 }
+
+//void search(char* user_name) {
+//
+//}

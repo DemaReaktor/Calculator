@@ -7,7 +7,7 @@
 #include <Windows.h> // GetStdHandle, SetConsoleTextAttribute
 #include <errno.h> // errno_t
 
-#define STR_LEN 50
+#define STR_LEN 20
 #define BLACK 0
 #define RED 4
 #define WHITE 15
@@ -17,3 +17,4 @@ long hash(char* str);
 void sign_up();
 void log_in();
 void authorization();
+// void search(char* user_name);
