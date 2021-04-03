@@ -85,13 +85,16 @@ void sign_up() {
 		printf("File was not opened!\n");
 	}
 	else {
-		fprintf(db, "%20s %20s %20s %20ld\n", user_name, first_name, last_name, hash_password);
-		fclose(db);
+		fprintf(db, "%s %s %s %ld\n", user_name, first_name, last_name, hash_password);
+		if (fclose(db) != 0) {
+			fprintf(stderr, "Error closing file\n");
+		}
 	}
 
 }
 
 void log_in() {
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	char user_name[STR_LEN + 1];
 	char password[STR_LEN + 1];
 
@@ -103,9 +106,38 @@ void log_in() {
 		fseek(stdin, 0, SEEK_END);
 		printf("Password: ");
 	} while (!scanf_s("%s", password, STR_LEN + 1));
-	// searching in db ...
+
+	if (search(user_name)) {
+		SETCOLOR(GREEN);
+		printf("*** Welcome! ***\n");
+		SETCOLOR(BLACK);
+	}
+	else {
+		SETCOLOR(RED);
+		printf("*** Not Found! ***\n");
+		SETCOLOR(BLACK);
+	}
 }
 
-//void search(char* user_name) {
-//
-//}
+bool search(char* user_name) {
+	bool found = false;
+	FILE* db;
+	errno_t err;
+	if ((err = fopen_s(&db, "Database.txt", "r")) != 0) {
+		printf("File was not opened!\n");
+	}
+	else {
+		char name[STR_LEN + 1];
+		char string[255];
+		do {
+			fscanf_s(db, "%s", name, 20);
+			fgets(string, 255, db);
+			printf("%s\n", name);
+			if (strcmp(user_name, name) || feof(db)) {
+				found = true;
+			}
+		} while (!found);
+		fclose(db);
+	}
+	return found;
+}
