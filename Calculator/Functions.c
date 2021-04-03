@@ -15,14 +15,14 @@ void authorization() {
 	fseek(stdin, 0, SEEK_END);
 
 	if (mode) {
-		log_in();
+		sign_up();
 	}
 	else {
-		sign_up();
+		log_in();
 	}
 }
 
-void log_in() {
+void sign_up() {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	bool match; // new_password and confirm_password are identical
 	char user_name[STR_LEN + 1];
@@ -79,7 +79,7 @@ void log_in() {
 
 }
 
-void sign_up() {
+void log_in() {
 	char user_name[STR_LEN + 1];
 	char password[STR_LEN + 1];
 

@@ -13,4 +13,6 @@
 #define WHITE 15
 #define SETCOLOR(COLOR) SetConsoleTextAttribute(hConsole, (WORD)((WHITE << 4) | COLOR));
 
+void sign_up();
+void log_in();
 void authorization();
