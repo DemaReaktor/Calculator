@@ -16,6 +16,7 @@ int main() {
 	do {
 		result = 0;
 		have_error = false;
+
 		do {
 			fseek(stdin, 0, SEEK_END);
 			printf(" First number: ");
@@ -31,6 +32,7 @@ int main() {
 		printf(" Operation: ");
 		opt = getchar();
 		fseek(stdin, 0, SEEK_END);
+
 		switch (opt) {
 			case '+':
 				result = a + b;
@@ -58,6 +60,7 @@ int main() {
 				have_error = true;
 				break;
 		}
+
 		if (!have_error) {
 			printf("Result: %g\n", result);
 		}

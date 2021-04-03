@@ -1,14 +1,16 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
-#include <Windows.h>
+#include <stdio.h> // printf, scanf_s, fgets, stdin
+#include <stdlib.h> // system
+#include <string.h> // strcmp
+#include <stdbool.h> // bool
+#include <Windows.h> // GetStdHandle, SetConsoleTextAttribute
+
 
 #define STR_LEN 80
 #define BLACK 0
 #define RED 4
 #define WHITE 15
 #define SETCOLOR(COLOR) SetConsoleTextAttribute(hConsole, (WORD)((WHITE << 4) | COLOR));
+
 
 int get_field(char* name) {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -22,24 +24,31 @@ int get_field(char* name) {
 	return 0;
 }
 
+
 void registration() {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
 	printf("<-- Log In or Sign Up -->\n"
 		"Mode 0 : Log In\n"
 		"Mode 1 : Create New Account\n");
+
 	int mode;
-	bool match;
+	bool match; // new_password and confirm_password are identical
+
 	do {
 		fseek(stdin, 0, SEEK_END);
 		printf("Select mode: ");;
 	} while (!scanf_s("%d", &mode));
 	fseek(stdin, 0, SEEK_END);
+
 	char user_name[STR_LEN + 1];
+
 	if (mode) {
 		char first_name[STR_LEN + 1];
 		char last_name[STR_LEN + 1];
 		char new_password[STR_LEN + 1];
 		char confirm_password[STR_LEN + 1];
+
 		do {
 			printf("User name: ");
 		} while (get_field(first_name));
@@ -49,14 +58,17 @@ void registration() {
 		do {
 			printf("Last name: ");
 		} while (get_field(last_name));
+
 		do {
 			match = true;
+
 			do {
 				printf("Password: ");
 			} while (get_field(new_password));
 			do {
 				printf("Confirm password: ");
 			} while (get_field(confirm_password));
+
 			if (strcmp(new_password, confirm_password)) {
 				SETCOLOR(RED);
 				printf("The values entered for Password and Confirm password\n"
@@ -64,15 +76,18 @@ void registration() {
 				SETCOLOR(BLACK);
 				match = false;
 			}
+
 		} while (!match);
 	}
 	else {
 		char password[STR_LEN + 1];
+
 		do {
 			printf("User name: ");
 		} while (get_field(user_name));
 		do {
-			printf("User name: ");
+			printf("Password: ");
 		} while (get_field(password));
+		// searching in db ...
 	}
 }
