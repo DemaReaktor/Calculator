@@ -9,6 +9,8 @@
 
 #define STR_LEN 20
 #define BLACK 0
+#define BLUE 1
+#define GREEN 2
 #define RED 4
 #define WHITE 15
 #define SETCOLOR(COLOR) SetConsoleTextAttribute(hConsole, (WORD)((WHITE << 4) | COLOR));

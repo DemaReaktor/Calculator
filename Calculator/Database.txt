@@ -1,2 +1,3 @@
            user_name           first_name            last_name        hash_password
              cat2000                Harry               Wilson           1992902963
+            user1234                  Bob               Wilson            284588446
