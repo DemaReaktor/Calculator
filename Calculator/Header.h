@@ -1,3 +1,5 @@
+#pragma warning(disable : 6054)
+
 #include <stdio.h> // printf, scanf_s, fgets, stdin, FILE
 #include <stdlib.h> // system
 #include <string.h> // strcmp
