@@ -17,6 +17,6 @@
 
 long hash(char* str);
 void sign_up();
-void log_in();
-void authorization();
+bool log_in();
+bool authorization();
 bool search(char* user_name);

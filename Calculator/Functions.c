@@ -13,7 +13,7 @@ long hash(char* str) {
 	return hash;
 }
 
-void authorization() {
+bool authorization() {
 	printf("*** Log In or Sign Up ***\n"
 		"Mode 0 : Log In\n"
 		"Mode 1 : Create New Account\n");
@@ -30,8 +30,11 @@ void authorization() {
 		sign_up();
 	}
 	else {
-		log_in();
+		if (!log_in()) {
+			return false;
+		}
 	}
+	return true;
 }
 
 void sign_up() {
@@ -83,17 +86,18 @@ void sign_up() {
 	errno_t err;
 	if ((err = fopen_s(&db, "Database.txt", "a")) != 0) {
 		printf("File was not opened!\n");
+		exit(EXIT_FAILURE);
 	}
 	else {
 		fprintf(db, "%20s %20s %20s %20ld\n", user_name, first_name, last_name, hash_password);
 		if (fclose(db) != 0) {
 			fprintf(stderr, "Error closing file\n");
+			exit(EXIT_FAILURE);
 		}
 	}
-
 }
 
-void log_in() {
+bool log_in() {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	char user_name[STR_LEN + 1];
 	char password[STR_LEN + 1];
@@ -115,6 +119,7 @@ void log_in() {
 		errno_t err;
 		if ((err = fopen_s(&db, "Database.txt", "rb")) != 0) {
 			printf("File was not opened!\n");
+			exit(EXIT_FAILURE);
 		}
 		else {
 			char uname[STR_LEN + 1];
@@ -141,6 +146,7 @@ void log_in() {
 			db_password[j] = '\0';
 			if (fclose(db) != 0) {
 				fprintf(stderr, "Error closing file\n");
+				exit(EXIT_FAILURE);
 			}
 		}
 		if (hash_password == atol(db_password)) {
@@ -152,13 +158,16 @@ void log_in() {
 			SETCOLOR(RED);
 			printf("*** Incorrect password! ***\n");
 			SETCOLOR(BLACK);
+			return false;
 		}
 	}
 	else {
 		SETCOLOR(RED);
 		printf("*** Not Found! ***\n");
 		SETCOLOR(BLACK);
+		return false;
 	}
+	return true;
 }
 
 bool search(char* user_name) {
