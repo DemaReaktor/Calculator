@@ -1,3 +1,1 @@
            user_name           first_name            last_name        hash_password
-               densh                Denys            Shkolenko            255346824
-             cat2000                  Cat                  Cat            193433182

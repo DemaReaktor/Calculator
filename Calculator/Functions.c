@@ -94,6 +94,9 @@ void sign_up() {
 			fprintf(stderr, "Error closing file\n");
 			exit(EXIT_FAILURE);
 		}
+		SETCOLOR(GREEN);
+		printf("\n*** Welcome! ***\n");
+		SETCOLOR(BLACK);
 	}
 }
 
