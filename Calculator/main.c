@@ -11,7 +11,7 @@ int main() {
 
 	printf("<-- Arithmetic Calculator -->\n");
 
-	registration();
+	authorization();
 
 	do {
 		result = 0;
