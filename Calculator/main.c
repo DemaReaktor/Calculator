@@ -1,14 +1,4 @@
-// v0.1.0
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <Windows.h>
-
-#define BLACK 0
-#define RED 4
-#define WHITE 15
-#define SETCOLOR(COLOR) SetConsoleTextAttribute(hConsole, (WORD)((WHITE << 4) | COLOR));
+#include "Header.h"
 
 int main() {
 	double a, b, result;
@@ -19,11 +9,14 @@ int main() {
 	// system("chcp 1251 & cls");
 	system("color F0");
 
-	printf("<-- Arithmetic calculator -->\n");
+	printf("<-- Arithmetic Calculator -->\n");
+
+	authorization();
 
 	do {
 		result = 0;
 		have_error = false;
+
 		do {
 			fseek(stdin, 0, SEEK_END);
 			printf(" First number: ");
@@ -39,6 +32,7 @@ int main() {
 		printf(" Operation: ");
 		opt = getchar();
 		fseek(stdin, 0, SEEK_END);
+
 		switch (opt) {
 			case '+':
 				result = a + b;
@@ -66,6 +60,7 @@ int main() {
 				have_error = true;
 				break;
 		}
+
 		if (!have_error) {
 			printf("Result: %g\n", result);
 		}
