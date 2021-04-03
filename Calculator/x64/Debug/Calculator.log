@@ -1,2 +1,7 @@
-﻿  main.c
+﻿  Functions.c
+C:\Users\denys\Desktop\GitProjects\Calculator\Calculator\Functions.c(11,10): warning C4047: return: "char *" отличается по уровням косвенного обращения от "int"
+C:\Users\denys\Desktop\GitProjects\Calculator\Calculator\Functions.c(6,6): warning C4101: i: неиспользованная локальная переменная
+C:\Users\denys\Desktop\GitProjects\Calculator\Calculator\Functions.c(72,1): warning C4047: инициализация: "int" отличается по уровням косвенного обращения от "char *"
+  main.c
+  Создание кода...
   Calculator.vcxproj -> C:\Users\denys\Desktop\GitProjects\Calculator\x64\Debug\Calculator.exe
