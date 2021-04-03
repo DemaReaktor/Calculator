@@ -1,8 +1,1 @@
-# Calculator
-### Authorization: ###  
-
- 
-
-### Database: ###  
-
-
+# Calculator  
