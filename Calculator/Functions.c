@@ -104,71 +104,85 @@ bool log_in() {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	char user_name[STR_LEN + 1];
 	char password[STR_LEN + 1];
+	bool repeat = true;
+	int attempts = 3;
 
 	do {
-		fseek(stdin, 0, SEEK_END);
-		printf("User name: ");
-	} while (!scanf_s("%s", user_name, STR_LEN + 1));
-	do {
-		fseek(stdin, 0, SEEK_END);
-		printf("Password: ");
-	} while (!scanf_s("%s", password, STR_LEN + 1));
+		do {
+			fseek(stdin, 0, SEEK_END);
+			printf("User name: ");
+		} while (!scanf_s("%s", user_name, STR_LEN + 1));
+		do {
+			fseek(stdin, 0, SEEK_END);
+			printf("Password: ");
+		} while (!scanf_s("%s", password, STR_LEN + 1));
 
-	if (search(user_name)) {
-		long hash_password = hash(password);
-		char db_password[STR_LEN + 1] = {'\0'};
 
-		FILE* db;
-		errno_t err;
-		if ((err = fopen_s(&db, "Database.txt", "rb")) != 0) {
-			printf("File was not opened!\n");
-			exit(EXIT_FAILURE);
-		}
-		else {
-			char uname[STR_LEN + 1];
-			char c;
-			int j;
-			fseek(db, 20, SEEK_SET);
-			do {
-				fseek(db, 65, SEEK_CUR);
+		if (search(user_name)) {
+			long hash_password = hash(password);
+			char db_password[STR_LEN + 1] = { '\0' };
+
+			FILE* db;
+			errno_t err;
+			if ((err = fopen_s(&db, "Database.txt", "rb")) != 0) {
+				printf("File was not opened!\n");
+				exit(EXIT_FAILURE);
+			}
+			else {
+				char uname[STR_LEN + 1];
+				char c;
+				int j;
+				fseek(db, 20, SEEK_SET);
+				do {
+					fseek(db, 65, SEEK_CUR);
+					j = 0;
+					for (int i = 0; i < 20; i++) {
+						if ((c = fgetc(db)) != ' ') {
+							uname[j++] = c;
+						}
+					}
+					uname[j] = '\0';
+				} while (strcmp(user_name, uname));
+				fseek(db, 43, SEEK_CUR);
 				j = 0;
 				for (int i = 0; i < 20; i++) {
 					if ((c = fgetc(db)) != ' ') {
-						uname[j++] = c;
+						db_password[j++] = c;
 					}
 				}
-				uname[j] = '\0';
-			} while (strcmp(user_name, uname));
-			fseek(db, 43, SEEK_CUR);
-			j = 0;
-			for (int i = 0; i < 20; i++) {
-				if ((c = fgetc(db)) != ' ') {
-					db_password[j++] = c;
+				db_password[j] = '\0';
+				if (fclose(db) != 0) {
+					fprintf(stderr, "Error closing file\n");
+					exit(EXIT_FAILURE);
 				}
 			}
-			db_password[j] = '\0';
-			if (fclose(db) != 0) {
-				fprintf(stderr, "Error closing file\n");
-				exit(EXIT_FAILURE);
+			if (hash_password == atol(db_password)) {
+				repeat = false;
+				SETCOLOR(GREEN);
+				printf("*** Welcome! ***\n");
+				SETCOLOR(BLACK);
 			}
-		}
-		if (hash_password == atol(db_password)) {
-			SETCOLOR(GREEN);
-			printf("*** Welcome! ***\n");
-			SETCOLOR(BLACK);
+			else {
+				repeat = true;
+				attempts--;
+				SETCOLOR(RED);
+				printf("*** Incorrect password! ***\n");
+				SETCOLOR(BLACK);
+			}
 		}
 		else {
 			SETCOLOR(RED);
-			printf("*** Incorrect password! ***\n");
+			repeat = true;
+			attempts--;
+			printf("*** Not Found! Try again. Attempts left: %d ***\n", attempts);
 			SETCOLOR(BLACK);
-			return false;
 		}
-	}
-	else {
+	} while (repeat && attempts != 0);
+	if (attempts == 0) {
 		SETCOLOR(RED);
-		printf("*** Not Found! ***\n");
+		printf("*** You tried to log in too often. ***\n");
 		SETCOLOR(BLACK);
-		return false;
+		exit(0);
 	}
 	return true;
 }
