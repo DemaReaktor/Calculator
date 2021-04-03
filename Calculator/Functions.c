@@ -85,7 +85,7 @@ void sign_up() {
 		printf("File was not opened!\n");
 	}
 	else {
-		fprintf(db, "%s %s %s %ld\n", user_name, first_name, last_name, hash_password);
+		fprintf(db, "%20s %20s %20s %20ld\n", user_name, first_name, last_name, hash_password);
 		if (fclose(db) != 0) {
 			fprintf(stderr, "Error closing file\n");
 		}
@@ -123,21 +123,26 @@ bool search(char* user_name) {
 	bool found = false;
 	FILE* db;
 	errno_t err;
-	if ((err = fopen_s(&db, "Database.txt", "r")) != 0) {
+	if ((err = fopen_s(&db, "Database.txt", "rb")) != 0) {
 		printf("File was not opened!\n");
 	}
 	else {
 		char name[STR_LEN + 1];
-		char string[255];
 		do {
-			fscanf_s(db, "%s", name, 20);
-			fgets(string, 255, db);
-			printf("%s\n", name);
-			if (strcmp(user_name, name) || feof(db)) {
+			for (int i = 0; i < 20; i++) {
+				name[i] = fgetc(db);
+				printf("%c", name[i]);
+			}
+			name[STR_LEN] = '\0';
+			printf("\n%s\n", name);
+			fseek(db, 64, SEEK_CUR);
+			if (!strcmp(user_name, name)) {
 				found = true;
 			}
-		} while (!found);
-		fclose(db);
+		} while (fgetc(db) != EOF);
+		if (fclose(db) != 0) {
+			fprintf(stderr, "Error closing file\n");
+		}
 	}
 	return found;
 }
