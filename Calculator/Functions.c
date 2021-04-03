@@ -2,6 +2,17 @@
 
 #include "Header.h"
 
+long hash(char* str) {
+	long hash = 5381;
+	int c;
+
+	while (c = *str++) {
+		hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
+	}
+
+	return hash;
+}
+
 void authorization() {
 	printf("<-- Log In or Sign Up -->\n"
 		"Mode 0 : Log In\n"
@@ -65,7 +76,7 @@ void sign_up() {
 		}
 	} while (!match);
 
-	// int hash_password = hash(new_password);
+	long hash_password = hash(new_password);
 
 	FILE* db;
 	errno_t err;
@@ -73,7 +84,7 @@ void sign_up() {
 		printf("File was not opened!\n");
 	}
 	else {
-		fprintf(db, "%s %s %s %s\n", user_name, first_name, last_name, new_password);
+		fprintf(db, "%s %s %s %ld\n", user_name, first_name, last_name, hash_password);
 		fclose(db);
 	}
 
