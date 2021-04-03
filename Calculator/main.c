@@ -9,7 +9,9 @@ int main() {
 	// system("chcp 1251 & cls");
 	system("color F0");
 
-	printf("<-- Arithmetic Calculator -->\n");
+	SETCOLOR(BLUE);
+	printf("<---- Arithmetic Calculator ---->\n\n");
+	SETCOLOR(BLACK);
 
 	authorization();
 

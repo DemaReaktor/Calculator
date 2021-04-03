@@ -14,16 +14,17 @@ long hash(char* str) {
 }
 
 void authorization() {
-	printf("<-- Log In or Sign Up -->\n"
+	printf("*** Log In or Sign Up ***\n"
 		"Mode 0 : Log In\n"
 		"Mode 1 : Create New Account\n");
 
 	int mode;
 	do {
 		fseek(stdin, 0, SEEK_END);
-		printf("Select mode: ");;
+		printf(" Select mode: ");;
 	} while (!scanf_s("%d", &mode));
 	fseek(stdin, 0, SEEK_END);
+	putchar('\n');
 
 	if (mode) {
 		sign_up();
@@ -70,7 +71,7 @@ void sign_up() {
 		if (strcmp(new_password, confirm_password)) {
 			SETCOLOR(RED);
 			printf("The values entered for Password and Confirm password\n"
-				"do not match. Please enter the same password for both fields.\n");
+				"do not match. Please enter the same password for both fields.\n\n");
 			SETCOLOR(BLACK);
 			match = false;
 		}
@@ -84,7 +85,7 @@ void sign_up() {
 		printf("File was not opened!\n");
 	}
 	else {
-		fprintf(db, "%s %s %s %ld\n", user_name, first_name, last_name, hash_password);
+		fprintf(db, "%20s %20s %20s %20ld\n", user_name, first_name, last_name, hash_password);
 		fclose(db);
 	}
 
@@ -104,3 +105,7 @@ void log_in() {
 	} while (!scanf_s("%s", password, STR_LEN + 1));
 	// searching in db ...
 }
+
+//void search(char* user_name) {
+//
+//}
