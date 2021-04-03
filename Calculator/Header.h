@@ -19,4 +19,4 @@ long hash(char* str);
 void sign_up();
 void log_in();
 void authorization();
-// void search(char* user_name);
+bool search(char* user_name);

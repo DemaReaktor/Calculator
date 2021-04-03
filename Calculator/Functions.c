@@ -86,12 +86,15 @@ void sign_up() {
 	}
 	else {
 		fprintf(db, "%20s %20s %20s %20ld\n", user_name, first_name, last_name, hash_password);
-		fclose(db);
+		if (fclose(db) != 0) {
+			fprintf(stderr, "Error closing file\n");
+		}
 	}
 
 }
 
 void log_in() {
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	char user_name[STR_LEN + 1];
 	char password[STR_LEN + 1];
 
@@ -103,9 +106,88 @@ void log_in() {
 		fseek(stdin, 0, SEEK_END);
 		printf("Password: ");
 	} while (!scanf_s("%s", password, STR_LEN + 1));
-	// searching in db ...
+
+	if (search(user_name)) {
+		long hash_password = hash(password);
+		char db_password[STR_LEN + 1] = {'\0'};
+
+		FILE* db;
+		errno_t err;
+		if ((err = fopen_s(&db, "Database.txt", "rb")) != 0) {
+			printf("File was not opened!\n");
+		}
+		else {
+			char uname[STR_LEN + 1];
+			char c;
+			int j;
+			fseek(db, 20, SEEK_SET);
+			do {
+				fseek(db, 65, SEEK_CUR);
+				j = 0;
+				for (int i = 0; i < 20; i++) {
+					if ((c = fgetc(db)) != ' ') {
+						uname[j++] = c;
+					}
+				}
+				uname[j] = '\0';
+			} while (strcmp(user_name, uname));
+			fseek(db, 43, SEEK_CUR);
+			j = 0;
+			for (int i = 0; i < 20; i++) {
+				if ((c = fgetc(db)) != ' ') {
+					db_password[j++] = c;
+				}
+			}
+			db_password[j] = '\0';
+			if (fclose(db) != 0) {
+				fprintf(stderr, "Error closing file\n");
+			}
+		}
+		if (hash_password == atol(db_password)) {
+			SETCOLOR(GREEN);
+			printf("*** Welcome! ***\n");
+			SETCOLOR(BLACK);
+		}
+		else {
+			SETCOLOR(RED);
+			printf("*** Incorrect password! ***\n");
+			SETCOLOR(BLACK);
+		}
+	}
+	else {
+		SETCOLOR(RED);
+		printf("*** Not Found! ***\n");
+		SETCOLOR(BLACK);
+	}
 }
 
-//void search(char* user_name) {
-//
-//}
+bool search(char* user_name) {
+	bool found = false;
+	FILE* db;
+	errno_t err;
+	if ((err = fopen_s(&db, "Database.txt", "rb")) != 0) {
+		printf("File was not opened!\n");
+	}
+	else {
+		char uname[STR_LEN + 1];
+		char c;
+		int j;
+		do {
+			j = 0;
+			for (int i = 0; i < 20; i++) {
+				if ((c = fgetc(db)) != ' ') {
+					uname[j++] = c;
+				}
+			}
+			uname[j] = '\0';
+			fseek(db, 64, SEEK_CUR);
+			if (!strcmp(user_name, uname)) {
+				found = true;
+			}
+		} while (fgetc(db) != EOF);
+		if (fclose(db) != 0) {
+			fprintf(stderr, "Error closing file\n");
+		}
+	}
+	return found;
+}
