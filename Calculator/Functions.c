@@ -108,8 +108,8 @@ void log_in() {
 	} while (!scanf_s("%s", password, STR_LEN + 1));
 
 	if (search(user_name)) {
-		// long hash_password = hash(password);
-		char db_password[STR_LEN + 1];
+		long hash_password = hash(password);
+		char db_password[STR_LEN + 1] = {'\0'};
 
 		FILE* db;
 		errno_t err;
@@ -127,30 +127,32 @@ void log_in() {
 				for (int i = 0; i < 20; i++) {
 					if ((c = fgetc(db)) != ' ') {
 						uname[j++] = c;
-						printf("%c\n", uname[j - 1]);
 					}
 				}
 				uname[j] = '\0';
 			} while (strcmp(user_name, uname));
-			printf("success\n");
 			fseek(db, 43, SEEK_CUR);
 			j = 0;
 			for (int i = 0; i < 20; i++) {
 				if ((c = fgetc(db)) != ' ') {
 					db_password[j++] = c;
-					printf("%c\n", db_password[j-1]);
 				}
 			}
 			db_password[j] = '\0';
-			printf("%s\n", db_password);
 			if (fclose(db) != 0) {
 				fprintf(stderr, "Error closing file\n");
 			}
 		}
-
-		SETCOLOR(GREEN);
-		printf("*** Welcome! ***\n");
-		SETCOLOR(BLACK);
+		if (hash_password == atol(db_password)) {
+			SETCOLOR(GREEN);
+			printf("*** Welcome! ***\n");
+			SETCOLOR(BLACK);
+		}
+		else {
+			SETCOLOR(RED);
+			printf("*** Incorrect password! ***\n");
+			SETCOLOR(BLACK);
+		}
 	}
 	else {
 		SETCOLOR(RED);
@@ -178,7 +180,6 @@ bool search(char* user_name) {
 				}
 			}
 			uname[j] = '\0';
-			printf("%s\n", uname);
 			fseek(db, 64, SEEK_CUR);
 			if (!strcmp(user_name, uname)) {
 				found = true;
