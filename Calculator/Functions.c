@@ -73,7 +73,7 @@ void sign_up() {
 		printf("File was not opened!\n");
 	}
 	else {
-		fprintf(db, "%s %s %s %d\n", user_name, first_name, last_name, new_password);
+		fprintf(db, "%s %s %s %s\n", user_name, first_name, last_name, new_password);
 		fclose(db);
 	}
 
