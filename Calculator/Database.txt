@@ -1,5 +1,2 @@
            user_name           first_name            last_name        hash_password
-             cat2000                Harry               Wilson           1992902963
-            user1234                  Bob               Wilson            284588446
-                   1                    1                    1               177622
-               densh                 sdsd                  sds           -125511873
+               densh                Denys            Shkolenko            255346824
