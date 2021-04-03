@@ -1,28 +1,16 @@
-#include <stdio.h> // printf, scanf_s, fgets, stdin
+#include <stdio.h> // printf, scanf_s, fgets, stdin, FILE
 #include <stdlib.h> // system
 #include <string.h> // strcmp
 #include <stdbool.h> // bool
 #include <Windows.h> // GetStdHandle, SetConsoleTextAttribute
+#include <errno.h> // errno_t
 
 
-#define STR_LEN 80
+#define STR_LEN 50
 #define BLACK 0
 #define RED 4
 #define WHITE 15
 #define SETCOLOR(COLOR) SetConsoleTextAttribute(hConsole, (WORD)((WHITE << 4) | COLOR));
-
-
-int get_field(char* name) {
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	if (!fgets(name, STR_LEN + 1, stdin)) {
-		SETCOLOR(RED);
-		printf("Error\n");
-		SETCOLOR(BLACK);
-		return 1;
-	}
-	fseek(stdin, 0, SEEK_END);
-	return 0;
-}
 
 
 void registration() {
@@ -50,24 +38,29 @@ void registration() {
 		char confirm_password[STR_LEN + 1];
 
 		do {
+			fseek(stdin, 0, SEEK_END);
 			printf("User name: ");
-		} while (get_field(first_name));
+		} while (!scanf_s("%s", user_name, STR_LEN + 1));
 		do {
+			fseek(stdin, 0, SEEK_END);
 			printf("First name: ");
-		} while (get_field(first_name));
+		} while (!scanf_s("%s", first_name, STR_LEN + 1));
 		do {
+			fseek(stdin, 0, SEEK_END);
 			printf("Last name: ");
-		} while (get_field(last_name));
+		} while (!scanf_s("%s", last_name, STR_LEN + 1));
 
 		do {
 			match = true;
 
 			do {
+				fseek(stdin, 0, SEEK_END);
 				printf("Password: ");
-			} while (get_field(new_password));
+			} while (!scanf_s("%s", new_password, STR_LEN + 1));
 			do {
+				fseek(stdin, 0, SEEK_END);
 				printf("Confirm password: ");
-			} while (get_field(confirm_password));
+			} while (!scanf_s("%s", confirm_password, STR_LEN + 1));
 
 			if (strcmp(new_password, confirm_password)) {
 				SETCOLOR(RED);
@@ -76,18 +69,29 @@ void registration() {
 				SETCOLOR(BLACK);
 				match = false;
 			}
-
 		} while (!match);
+
+		FILE* db;
+		errno_t err;
+		if ((err = fopen_s(&db, "Database.txt", "a")) != 0) {
+			printf("File was not opened!\n");
+		}
+		else {
+			fprintf(db, "%s %s %s %s\n", user_name, first_name, last_name, new_password);
+			fclose(db);
+		}
 	}
 	else {
 		char password[STR_LEN + 1];
 
 		do {
+			fseek(stdin, 0, SEEK_END);
 			printf("User name: ");
-		} while (get_field(user_name));
+		} while (!scanf_s("%s", user_name, STR_LEN + 1));
 		do {
+			fseek(stdin, 0, SEEK_END);
 			printf("Password: ");
-		} while (get_field(password));
+		} while (!scanf_s("%s", password, STR_LEN + 1));
 		// searching in db ...
 	}
 }
