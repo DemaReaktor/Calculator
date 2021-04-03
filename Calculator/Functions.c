@@ -128,13 +128,16 @@ bool search(char* user_name) {
 	}
 	else {
 		char name[STR_LEN + 1];
+		char c;
+		int j;
 		do {
+			j = 0;
 			for (int i = 0; i < 20; i++) {
-				name[i] = fgetc(db);
-				printf("%c", name[i]);
+				if ((c = fgetc(db)) != ' ') {
+					name[j++] = c;
+				}
 			}
-			name[STR_LEN] = '\0';
-			printf("\n%s\n", name);
+			name[j] = '\0';
 			fseek(db, 64, SEEK_CUR);
 			if (!strcmp(user_name, name)) {
 				found = true;
