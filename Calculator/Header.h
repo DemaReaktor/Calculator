@@ -73,6 +73,8 @@ void registration() {
 			}
 		} while (!match);
 
+		// 
+
 		FILE* db;
 		errno_t err;
 		if ((err = fopen_s(&db, "Database.txt", "a")) != 0) {
