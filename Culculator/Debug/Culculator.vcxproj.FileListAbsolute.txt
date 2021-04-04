@@ -1,0 +1,3 @@
+G:\2 семестр\Компоненты програмной инженерии\Практики\№3\Culculator\Culculator\Debug\Culculator.vcxprojAssemblyReference.cache
+G:\2 семестр\Компоненты програмной инженерии\Практики\№3\Culculator\Culculator\Debug\Culculator.MyForm.resources
+G:\2 семестр\Компоненты програмной инженерии\Практики\№3\Culculator\Culculator\Debug\Culculator.vcxproj.GenerateResource.cache
