@@ -13,7 +13,7 @@ long hash(char* str) {
 	return hash;
 }
 
-void authorization() {
+bool authorization() {
 	printf("*** Log In or Sign Up ***\n"
 		"Mode 0 : Log In\n"
 		"Mode 1 : Create New Account\n");
@@ -30,8 +30,11 @@ void authorization() {
 		sign_up();
 	}
 	else {
-		log_in();
+		if (!log_in()) {
+			return false;
+		}
 	}
+	return true;
 }
 
 void sign_up() {
@@ -92,12 +95,12 @@ void sign_up() {
 			exit(EXIT_FAILURE);
 		}
 		SETCOLOR(GREEN);
-		printf("\n*** Welcome! ***\n\n");
+		printf("\n*** Welcome! ***\n");
 		SETCOLOR(BLACK);
 	}
 }
 
-void log_in() {
+bool log_in() {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	char user_name[STR_LEN + 1];
 	char password[STR_LEN + 1];
@@ -129,9 +132,9 @@ void log_in() {
 				char uname[STR_LEN + 1];
 				char c;
 				int j;
-				fseek(db, 20, SEEK_SET); // skip the first word in the title
+				fseek(db, 20, SEEK_SET);
 				do {
-					fseek(db, 65, SEEK_CUR); // go to a new line
+					fseek(db, 65, SEEK_CUR);
 					j = 0;
 					for (int i = 0; i < 20; i++) {
 						if ((c = fgetc(db)) != ' ') {
@@ -140,7 +143,7 @@ void log_in() {
 					}
 					uname[j] = '\0';
 				} while (strcmp(user_name, uname));
-				fseek(db, 43, SEEK_CUR); // go to hash_password column
+				fseek(db, 43, SEEK_CUR);
 				j = 0;
 				for (int i = 0; i < 20; i++) {
 					if ((c = fgetc(db)) != ' ') {
@@ -156,7 +159,7 @@ void log_in() {
 			if (hash_password == atol(db_password)) {
 				repeat = false;
 				SETCOLOR(GREEN);
-				printf("\n*** Welcome! ***\n\n");
+				printf("*** Welcome! ***\n");
 				SETCOLOR(BLACK);
 			}
 			else {
@@ -168,9 +171,9 @@ void log_in() {
 			}
 		}
 		else {
+			SETCOLOR(RED);
 			repeat = true;
 			attempts--;
-			SETCOLOR(RED);
 			printf("*** Not Found! Try again. Attempts left: %d ***\n", attempts);
 			SETCOLOR(BLACK);
 		}
@@ -181,6 +184,7 @@ void log_in() {
 		SETCOLOR(BLACK);
 		exit(0);
 	}
+	return true;
 }
 
 bool search(char* user_name) {
@@ -202,7 +206,7 @@ bool search(char* user_name) {
 				}
 			}
 			uname[j] = '\0';
-			fseek(db, 64, SEEK_CUR); // go to a new line
+			fseek(db, 64, SEEK_CUR);
 			if (!strcmp(user_name, uname)) {
 				found = true;
 			}
