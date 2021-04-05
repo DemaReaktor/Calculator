@@ -1,9 +1,9 @@
 #pragma warning(disable : 6054)
 
-#include <stdio.h> // printf, scanf_s, fgets, stdin, FILE
+#include <stdio.h>
 #include <stdlib.h> // system
 #include <string.h> // strcmp
-#include <stdbool.h> // bool
+#include <stdbool.h>
 #include <Windows.h> // GetStdHandle, SetConsoleTextAttribute
 #include <errno.h> // errno_t
 
@@ -15,8 +15,8 @@
 #define WHITE 15
 #define SETCOLOR(COLOR) SetConsoleTextAttribute(hConsole, (WORD)((WHITE << 4) | COLOR));
 
-long hash(char* str);
+long hash(char* str); // djb3 hashing function
 void sign_up();
-bool log_in();
-bool authorization();
+void log_in();
+void authorization();
 bool search(char* user_name);
