@@ -15,7 +15,7 @@
 #define WHITE 15
 #define SETCOLOR(COLOR) SetConsoleTextAttribute(hConsole, (WORD)((WHITE << 4) | COLOR));
 
-long hash(char* str);
+long hash(char* str); // djb3 hashing function
 void sign_up();
 bool log_in();
 bool authorization();

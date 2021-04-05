@@ -7,7 +7,7 @@ int main() {
 	bool have_error; 
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	// system("chcp 1251 & cls");
-	system("color F0");
+	system("color F0"); // white background, black font
 
 	SETCOLOR(BLUE);
 	printf("<---- Arithmetic Calculator ---->\n\n");
@@ -64,10 +64,10 @@ int main() {
 			}
 
 			if (!have_error) {
-				printf("Result: %g\n", result);
+				printf(" Result: %g\n", result);
 			}
 
-			printf("\n Continue (y/n)? ");
+			printf("\nContinue (y/n)? ");
 			while ((repeat_prog = getchar()) == ' ' || repeat_prog == '\n' || repeat_prog == '\t');
 			fseek(stdin, 0, SEEK_END);
 			putchar('\n');
